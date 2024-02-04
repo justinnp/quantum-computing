@@ -1,5 +1,6 @@
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile
 from qiskit_aer.backends.qasm_simulator import QasmSimulator
+from question1 import q1a, q1b, q1c
 
 """
 Qiskit quantum circuits can be run on either real quantum computers, or simulators.
@@ -47,6 +48,23 @@ def q2_example():
     return counts
 
 
+def quantum_simulator(circuit):
+    """
+    Transpiles and runs the Qasm simulator in 65536 shots
+    Args: 
+        circuit: qiskit.QuantumCircuit
+    Return:
+        counts: qiskit.result.count
+    """
+    simulator = QasmSimulator()
+    cc = transpile(circuit, simulator)
+    # Execute the circuit on the qasm simulator
+    job = simulator.run(cc, shots=65536)
+    # Grab results from the job
+    result = job.result()
+    counts = result.get_counts(cc)
+    return counts
+
 def q2a():
     """
     Instructions:
@@ -65,11 +83,9 @@ def q2a():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`q2a` function in "
-            + "`question2.py` needs to be implemented"
-        )
+    q2a_circuit = q1a()
+    q2a_circuit.measure_all()
+    counts = quantum_simulator(q2a_circuit)
 
     ############################################################################
     # Student code end
@@ -97,10 +113,9 @@ def q2b():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`q2b` function in "
-            + "`question2.py` needs to be implemented"
-        )
+    q2b_circuit = q2b()
+    q2b_circuit.measure_all()
+    counts = quantum_simulator(q2b_circuit)
 
     ############################################################################
     # Student code end
@@ -128,10 +143,9 @@ def q2c():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`q2c` function in "
-            + "`question2.py` needs to be implemented"
-        )
+    q2c_circuit = q2b()
+    q2c_circuit.measure_all()
+    counts = quantum_simulator(q2c_circuit)
 
     ############################################################################
     # Student code end

@@ -27,12 +27,6 @@ def q1a():
     # CNOT with q0 as control and q1 as target
     qc.cx(0,1)
     qc.cx(1,2)
-    return qc
-
-    raise NotImplementedError(
-        "`q1a` function in "
-        + "`Question1.py` needs to be implemented"
-    )
 
     ############################################################################
     # Student code end
@@ -57,24 +51,18 @@ def q1b():
     q_register = QuantumRegister(6, 'qreg')
     # instantiate classical register with 3 bits
     c_register = ClassicalRegister(3, 'creg')
-    q_circuit_1b = QuantumCircuit(q_register, c_register)
+    qc = QuantumCircuit(q_register, c_register)
     # apply H gate to each qubit
     for i in range(0,6):
-        q_circuit_1b.h(q_register[i])
-    q_circuit_1b.cx(0,2)
-    q_circuit_1b.cx(1,3)
-    q_circuit_1b.cx(2,4)
+        qc.h(q_register[i])
+    qc.cx(0,2)
+    qc.cx(1,3)
+    qc.cx(2,4)
     # barrier for visual separation bw CNOT and H
-    q_circuit_1b.barrier()
-    q_circuit_1b.h(q_register[0])
-    q_circuit_1b.h(q_register[2])
-    q_circuit_1b.h(q_register[4])
-    return q_circuit_1b
-
-    raise NotImplementedError(
-        "`q1b` function in "
-        + "`question1.py` needs to be implemented"
-    )
+    qc.barrier()
+    qc.h(q_register[0])
+    qc.h(q_register[2])
+    qc.h(q_register[4])
 
     ############################################################################
     # Student code end
@@ -99,31 +87,24 @@ def q1c():
     q_register = QuantumRegister(6, 'qreg')
     # instantiate classical register with 3 bits
     c_register = ClassicalRegister(3, 'creg')
-    q_circuit_1c = QuantumCircuit(q_register, c_register)
+    qc = QuantumCircuit(q_register, c_register)
     # H gates
-    q_circuit_1c.h(q_register[0])
-    q_circuit_1c.h(q_register[1])
-    q_circuit_1c.h(q_register[5])
+    qc.h(q_register[0])
+    qc.h(q_register[1])
+    qc.h(q_register[5])
     # U gates
     for i in range(5,0,-1):
         # control starts at 0 to 4
         ix = 5 - i
         # target of q5
-        q_circuit_1c.cu(0, 0, pi / (2**i), 0, q_register[ix], q_register[5])
+        qc.cu(0, 0, pi / (2**i), 0, q_register[ix], q_register[5])
     # SWAPs
-    q_circuit_1c.swap(q_register[0], q_register[5])
-    q_circuit_1c.barrier()
-    q_circuit_1c.swap(q_register[1], q_register[4])
-    q_circuit_1c.barrier()
-    q_circuit_1c.swap(q_register[2], q_register[3])
+    qc.swap(q_register[0], q_register[5])
+    qc.barrier()
+    qc.swap(q_register[1], q_register[4])
+    qc.barrier()
+    qc.swap(q_register[2], q_register[3])
     # q_circuit_1c.draw(output="mpl", plot_barriers=False)
-    return q_circuit_1c
-
-
-    raise NotImplementedError(
-        "`q1c` function in "
-        + "`question1.py` needs to be implemented"
-    )
 
     ############################################################################
     # Student code end
