@@ -1,4 +1,5 @@
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from numpy import pi
 
 """
 In this question, you need to design quantum circuits to generate the given quantum states in Dirac's notations.
@@ -22,11 +23,10 @@ def q3a():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`q3a` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    qc = QuantumCircuit(2)
+    # apply H to both qubits to get superposition across 00, 01, 10, 11 w/ 25% probability for each
+    qc.h(0)
+    qc.h(1)
 
     ############################################################################
     # Student code end
@@ -49,11 +49,14 @@ def q3b():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`q3b` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    q_register = QuantumRegister(3, 'q')
+    qc = QuantumCircuit(q_register)
+    # amplitudes derived as cos(theta/2) = 1/2, sin(theta/2) = sqrt(3)/2
+    # apply Ry gate with 2pi/3 rotation
+    qc.ry((2 * pi) / 3, q_register[0])
+    qc.cx(q_register[0], q_register[2])
+    qc.x(q_register[1])
+    qc.cx(q_register[0], q_register[1])
 
     ############################################################################
     # Student code end
@@ -76,11 +79,16 @@ def q3c():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`q3c` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    q_register = QuantumRegister(2, 'q')
+    qc = QuantumCircuit(q_register)
+    # apply H for superposition
+    qc.h(q_register[0])
+    # apply CNOT for entanglement and
+    qc.cx(q_register[0], q_register[1])
+    # flip second qubit
+    qc.x(q_register[1])
+    # phase shift on second qubit for negative sign
+    qc.z(q_register[1])
 
     ############################################################################
     # Student code end
