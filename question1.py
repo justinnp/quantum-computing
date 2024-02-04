@@ -69,7 +69,7 @@ def q1b():
     q_circuit_1b.h(q_register[0])
     q_circuit_1b.h(q_register[2])
     q_circuit_1b.h(q_register[4])
-    q_circuit_1b.draw(output="mpl", plot_barriers=False)
+    return q_circuit_1b
 
     raise NotImplementedError(
         "`q1b` function in "
@@ -116,7 +116,8 @@ def q1c():
     q_circuit_1c.swap(q_register[1], q_register[4])
     q_circuit_1c.barrier()
     q_circuit_1c.swap(q_register[2], q_register[3])
-    q_circuit_1c.draw(output="mpl", plot_barriers=False)
+    # q_circuit_1c.draw(output="mpl", plot_barriers=False)
+    return q_circuit_1c
 
 
     raise NotImplementedError(
