@@ -177,11 +177,15 @@ def quantum_adder():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`quantum_adder` function in "
-            + "`question4.py` needs to be implemented"
-        )
+    # digital 2-bit circuit for adder is XOR + AND
+        # result going to XOR, carry going to AND
+    # 8 qubits to add 4 and 4, with an additional qubit for carry
 
+    input1 = QuantumRegister(4, 'input1')
+    input2 = QuantumRegister(4, 'input2')
+    s = QuantumRegister(4, 's')
+    c_out = QuantumRegister(1, 'c_out')
+    result = ClassicalRegister(5, 'result')
     ############################################################################
     # Student code end
     ############################################################################
