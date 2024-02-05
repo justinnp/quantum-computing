@@ -113,8 +113,10 @@ def q2b():
     # Student code begin
     ############################################################################
 
-    q2b_circuit = q2b()
-    q2b_circuit.measure_all()
+    q2b_circuit = q1b()
+    # measure first 3 qubits measure(qregs, cregs)
+    for i in range(3):
+        q2b_circuit.measure(i, i)
     counts = quantum_simulator(q2b_circuit)
 
     ############################################################################
@@ -143,8 +145,12 @@ def q2c():
     # Student code begin
     ############################################################################
 
-    q2c_circuit = q2b()
-    q2c_circuit.measure_all()
+    q2c_circuit = q1c()
+    # measure last 3 qubits measure(qregs, cregs)
+    q2c_size = q2c_circuit.num_qubits
+    q2c_circuit.measure(q2c_size-3, 0)
+    q2c_circuit.measure(q2c_size-2, 1)
+    q2c_circuit.measure(q2c_size-1, 2)
     counts = quantum_simulator(q2c_circuit)
 
     ############################################################################
