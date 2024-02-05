@@ -143,7 +143,7 @@ def q2c():
     # Student code begin
     ############################################################################
 
-    q2c_circuit = q2b()
+    q2c_circuit = q2c()
     q2c_circuit.measure_all()
     counts = quantum_simulator(q2c_circuit)
 

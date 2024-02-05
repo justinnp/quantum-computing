@@ -150,7 +150,7 @@ def quantum_xor():
     # CNOT correlates to analog logical XOR
     qc.cx(q_register[0], q_register[1])
     # SWAP q1 with the measured output q0
-    qc.swap(q_register[0], q_register[2])
+    qc.swap(q_register[0], q_register[1])
 
     ############################################################################
     # Student code end
