@@ -74,12 +74,13 @@ def quantum_and():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`quantum_and` function in "
-            + "`question4.py` needs to be implemented"
-        )
-
+    # 3 qubits, q0,q1 for controls and q2 for output
+    q_register = QuantumRegister(3, 'q')
+    qc = QuantumCircuit(q_register)
+    # toffoli correlates to analog logical AND
+    qc.ccx(q_register[0], q_register[1], q_register[2])
+    # SWAP q2 with the measured output q0
+    qc.swap(q_register[0], q_register[2])
     ############################################################################
     # Student code end
     ############################################################################
@@ -105,11 +106,21 @@ def quantum_or():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`quantum_or` function in "
-            + "`question4.py` needs to be implemented"
-        )
-
+    # 3 qubits, q0,q1 for controls and q2 for output
+    q_register = QuantumRegister(3, 'q')
+    qc = QuantumCircuit(q_register)
+    # flip bits of control qubits
+    qc.x(q_register[0])
+    qc.x(q_register[1])
+    # toffoli 
+    qc.ccx(q_register[0], q_register[1], q_register[2])
+    # flip bits of control qubits and target qubit
+    qc.x(q_register[0])
+    qc.x(q_register[1])
+    qc.x(q_register[2])
+    # SWAP q2 with the measured output q0
+    qc.swap(q_register[0], q_register[2])
+    
     ############################################################################
     # Student code end
     ############################################################################
@@ -134,10 +145,12 @@ def quantum_xor():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`quantum_xor` function in "
-            + "`question4.py` needs to be implemented"
-        )
+    q_register = QuantumRegister(2, 'q')
+    qc = QuantumCircuit(q_register)
+    # CNOT correlates to analog logical XOR
+    qc.cx(q_register[0], q_register[1])
+    # SWAP q1 with the measured output q0
+    qc.swap(q_register[0], q_register[2])
 
     ############################################################################
     # Student code end
