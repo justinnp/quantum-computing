@@ -19,11 +19,11 @@ def deutsch_f1_oracle():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-        "`deutsch_f1_oracle` function in "
-        + "`question2.py` needs to be implemented"
-    )
-
+    # Assume superposition (H) is already applied on input qubits
+    qc = QuantumCircuit(2)
+    # Assume superposition negation (H) is already applied on qubit 0
+    qc.i(0)
+    qc.i(1)
     ############################################################################
     # Student code end
     ############################################################################
@@ -46,11 +46,9 @@ def deutsch_f2_oracle():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-        "`deutsch_f2_oracle` function in "
-        + "`question2.py` needs to be implemented"
-    )
-
+    qc = QuantumCircuit(2)
+    qc.x(0)
+    qc.cx(0, 1)
     ############################################################################
     # Student code end
     ############################################################################
@@ -73,11 +71,8 @@ def deutsch_f3_oracle():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-        "`deutsch_f3_oracle` function in "
-        + "`question2.py` needs to be implemented"
-    )
-
+    qc = QuantumCircuit(2)
+    qc.cx(0, 1)
     ############################################################################
     # Student code end
     ############################################################################
@@ -100,10 +95,8 @@ def deutsch_f4_oracle():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-        "`deutsch_f4_oracle` function in "
-        + "`question2.py` needs to be implemented"
-    )
+    qc = QuantumCircuit(2)
+    qc.x(1)
 
     ############################################################################
     # Student code end
