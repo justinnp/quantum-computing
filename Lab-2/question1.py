@@ -57,6 +57,14 @@ def qubit_encoding(prepared_qubits, classical_information):
     n = len(classical_information)
     
     # TODO evaluate classical string of even length separately from odd lengthed
+    # if n is even
+    # then break the classical information into pairs
+    # apply the bit pair encodings for a=1, b=1
+
+    # elif n is odd
+    # then break first n-1 classical bits into pairs
+    # then apply bit pair encodings for a=1, b=1
+    # ? then append final bit without modification? how do we maintain integrety of classical bit through qubit?
 
     # Classical preparation and encoding
     for i in range(0, n, 2):
