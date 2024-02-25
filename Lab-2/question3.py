@@ -1,4 +1,5 @@
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from math import pi
 
 """
 Implement Bernstein Vazirani (BV) algorithm with an oracle function $U_f$ of secrete key `0101010`. Your implementation should not contain any measurments.
@@ -18,11 +19,28 @@ def bv_ideal():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`bv_ideal` function in "
-            + "`Question3.py` needs to be implemented"
-        )
+    secret_string = "0101010"
+    # 7 qubits instantiated for 7 classical bits in secret string, with +1 qubit acting as the tmp qubit
+    n = len(secret_string)
+    qc = QuantumCircuit(n+1)
 
+    # apply superposition (H) to all classically mapped qubits
+    for i in range(n):
+        qc.h(i)
+
+    # apply X gate and superposition (H) to tmp qubit
+    qc.x(n)
+    qc.h(n)
+
+    # apply CNOT controlled by qubit_i wherever a 1 is found
+    for i, value in enumerate(secret_string):
+        if value == '1':
+            qc.cx(i, n)
+
+    # negate superposition (H) for all qubits after oracle
+    for i in range(n+1):
+        qc.h(i)
+    
     ############################################################################
     # Student code end
     ############################################################################
@@ -46,10 +64,27 @@ def bv_noisy():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`bv_noisy` function in "
-            + "`Question3.py` needs to be implemented"
-        )
+    secret_string = "0101010"
+    # 7 qubits instantiated for 7 classical bits in secret string, with +1 qubit acting as the tmp qubit
+    n = len(secret_string)
+    qc = QuantumCircuit(n+1)
+
+    # apply superposition (H) to all classically mapped qubits
+    for i in range(n):
+        qc.u(pi / 2, pi / 16, pi, i)
+
+    # apply X gate and superposition (H) to tmp qubit
+    qc.x(n)
+    qc.u(pi / 2, pi / 16, pi, n)
+
+    # apply CNOT controlled by qubit_i wherever a 1 is found
+    for i, value in enumerate(secret_string):
+        if value == '1':
+            qc.cx(i, n)
+
+    # negate superposition (H) for all qubits after oracle
+    for i in range(n+1):
+        qc.u(pi / 2, pi / 16, pi, i)
 
     ############################################################################
     # Student code end
