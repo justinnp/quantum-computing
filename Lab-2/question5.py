@@ -1,4 +1,6 @@
-from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile
+from qiskit_aer.backends.qasm_simulator import QasmSimulator
+import math
 
 """
 Grover's algorithm can be used to amplify the probability of a target state by a rotation oracle and an inversion oracle.
@@ -23,10 +25,44 @@ def grover(n: int):
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`grover` function in "
-            + "`question5.py` needs to be implemented"
-        )
+    qc = QuantumCircuit(3, 3)
+    
+    # super position for all qubits in the base Grover's circuit
+    for i in range(3):
+        qc.h(i)
+
+    for i in range(n):
+        # Rotation Operator Oracle
+        qc.x(0)
+        qc.h(2)
+        qc.ccx(0, 1, 2)
+        qc.x(0)
+        qc.h(2)
+
+        # Inversion Operator
+        qc.h(0)
+        qc.h(1)
+        qc.h(2)
+        qc.x(0)
+        qc.x(1)
+        qc.x(2)
+        qc.barrier(2)
+        qc.barrier(0)
+        qc.barrier(1)
+        qc.h(2)
+        qc.ccx(0, 1, 2)
+        qc.h(2)
+        qc.barrier(0)
+        qc.barrier(1)
+        qc.barrier(2)
+        qc.barrier(1)
+        qc.barrier(0)
+        qc.x(0)
+        qc.x(1)
+        qc.x(2)
+        qc.h(0)
+        qc.h(1)
+        qc.h(2)
 
     ############################################################################
     # Student code end
@@ -49,10 +85,16 @@ def target_state():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`target_state` function in "
-            + "`question5.py` needs to be implemented"
-        )
+    # measure, take max of counts for target state
+    # g_qc.measure(q_r, c_r)
+    # simulator = QasmSimulator()
+    # cc = transpile(g_qc, simulator)
+    # result = simulator.run(cc, shots=1024).result()
+    # counts = result.get_counts(g_qc)
+    # plot_histogram(counts)
+    # target_state = max(counts, key=counts.get)
+
+    s = "110"
 
     ############################################################################
     # Student code end
@@ -73,11 +115,15 @@ def post_processing(grover_qc):
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`post_processing` function in "
-            + "`question5.py` needs to be implemented"
-        )
+    for i in range(3):
+        grover_qc.measure(i, i)
+    simulator = QasmSimulator()
+    cc = transpile(grover_qc, simulator)
+    result = simulator.run(cc, shots=1024).result()
+    counts = result.get_counts(grover_qc)
+    target = "110"
+    if target in counts:
+        prob = counts[target] / sum(counts.values())
 
     ############################################################################
     # Student code end
