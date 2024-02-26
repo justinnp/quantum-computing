@@ -21,14 +21,17 @@ def qubit_preparation(n):
     ############################################################################
 
     # adds additional qubit when n is odd
-    num_qubits = math.ceil(n / 2) * 2
-    qc = QuantumCircuit(num_qubits, n)
+    if n % 2 == 0:
+        num_qubits = n // 2 
+    else:
+        num_qubits = n // 2 + 1
+    qc = QuantumCircuit(num_qubits * 2, num_qubits * 2)
 
     # qubit preparation by Charlie
     # to prepare encoding for SDC: +superposition(h) +entanglement (cx)
-    for i in range(0, num_qubits, 2):
+    for i in range(num_qubits):
         qc.h(i)
-        qc.cx(i, i + 1)  
+        qc.cx(i, i + num_qubits)
 
     ############################################################################
     # Student code end
@@ -52,20 +55,20 @@ def qubit_encoding(prepared_qubits, classical_information):
     # Student code begin
     ############################################################################
 
-    n = len(classical_information)
+    n = len(classical_information) // 2
 
-    # Classical preparation and encoding
-    if n % 2 == 0:
-        # create bit pair tuples for enumeration
-        bit_pairs = zip(classical_information[0::2], classical_information[1::2])
-        for i, (a, b) in enumerate(bit_pairs):
-            # when a == 1, apply Z gate on q0
-            # when b == 1, apply X gate on q0
-            if a == '1':
-                prepared_qubits.z(i)
-            if b == '1':
-                prepared_qubits.x(i)
-        qc = prepared_qubits
+    for i in range(0, len(classical_information), 2):
+        bit_pair = classical_information[i:i+2]
+        # when a == 1, apply Z gate on q0
+        # when b == 1, apply X gate on q0
+        if bit_pair == '11':
+            prepared_qubits.z(i // 2)
+            prepared_qubits.x(i // 2)
+        elif bit_pair == '10':
+            prepared_qubits.z(i // 2)
+        elif bit_pair == '01':
+            prepared_qubits.x(i // 2)
+    qc = prepared_qubits
 
     ############################################################################
     # Student code end
@@ -89,26 +92,28 @@ def qubit_decoding(encoded_qubits, n):
     # Student code begin
     ############################################################################
 
-    # decoding employs reverse encoding gates: -entanglement (cx) -superposition (h)
-    num_qubits = math.ceil(n / 2) * 2
     if n % 2 == 0:
-        for i in range(0, num_qubits, 2):
-            encoded_qubits.cx(i, i + 1)
-            encoded_qubits.h(i)
-    
-        # measure encoded qubits
-        for i in range(0, num_qubits, 2):
-            encoded_qubits.measure(i, i)
-            encoded_qubits.measure(i + 1, i + 1)
+        num_qubits = n // 2 
+    else:
+        num_qubits = n // 2 + 1
+    # decoding employs reverse encoding gates: -entanglement (cx) -superposition (h)
+    for i in range(num_qubits):
+        encoded_qubits.cx(i, i + num_qubits)
+        encoded_qubits.h(i)
 
-        # simulate to extract results
-        simulator = QasmSimulator()
-        cc = transpile(encoded_qubits, simulator)
-        job = simulator.run(cc, shots=1)
-        result = job.result()
-        counts = result.get_counts(encoded_qubits)
-        measurement = next(iter(counts))
-        restored_information = measurement[::-1]
+    # measure encoded qubits
+    for i in range(num_qubits * 2):
+        encoded_qubits.measure(i, i)
+
+    # simulate to extract results
+    simulator = QasmSimulator()
+    cc = transpile(encoded_qubits, simulator)
+    job = simulator.run(cc, shots=1024)
+    result = job.result()
+    counts = result.get_counts(encoded_qubits)
+    measurement = max(counts, key=counts.get)
+    restored_information = measurement[::-1]
+
 
     ############################################################################
     # Student code end
