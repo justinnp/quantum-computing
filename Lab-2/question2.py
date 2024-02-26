@@ -123,11 +123,12 @@ def deutsch_jozsa_oracle():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-        "`deutsch_jozsa_oracle` function in "
-        + "`question2.py` needs to be implemented"
-    )
-
+    # 4 bit unsigned int with an added qubit
+    qc = QuantumCircuit(5)
+    # odd 4-bit unsigned ints have a least significant bit value of 1, even least signifcant bit value is 0
+    # 0th place (lsb) is on q0, so have lsb be the control and the ancilla as the target
+    qc.cx(0, 4)
+    
     ############################################################################
     # Student code end
     ############################################################################
