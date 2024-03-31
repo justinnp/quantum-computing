@@ -1,5 +1,6 @@
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile, transpiler
 from utils import get_benchmark_dict
+import numpy as np
 
 workload_list = get_benchmark_dict("SWAP_Benchmarks")
 
@@ -21,11 +22,37 @@ def create_coupling_maps():
     ############################################################################
     # Student code begin
     ############################################################################
+    for grid in [(5, 5, 'GRID 5X5'), (5, 4, 'GRID 5X4'), (7, 3, 'GRID 7X3')]:
+        height = grid[0]
+        width = grid[1]
+        grid_edges = []
+        # starting from maximum qubit number
+        # connect horizontal edges
+        for row in range(height):
+            for col in range(width - 1):
+                qubit = row * width + col
+                grid_edges.append([qubit, qubit + 1])
+                grid_edges.append([qubit + 1, qubit])
+        # connect vertical edges
+        for col in range(width):
+            for row in range(height - 1):
+                qubit = row * width + col
+                grid_edges.append([qubit, (row + 1) * width + col])
+                # qiskit requires stating direction, so duplicating in the opposite direction for symmetric grids
+                grid_edges.append([(row + 1) * width + col, qubit])
+        c_map = transpiler.CouplingMap(couplinglist=grid_edges)
+        print(grid_edges)
+        coupling_maps[grid[2]] = c_map
     
-    raise NotImplementedError(
-            "`create_coupling_maps` function in "
-            + "`question2.py` needs to be implemented"
-        )
+    ring_edges = []
+    for i in range(20):
+        neighbor_forward = (i + 1) % 20
+        # negative modulo: n - a mod n
+        neighbor_backward = (i - 1) % 20
+        ring_edges.append([i, neighbor_forward])
+        ring_edges.append([i, neighbor_backward])
+    c_map = transpiler.CouplingMap(couplinglist=ring_edges)
+    coupling_maps["RING 20"] = c_map
 
     ############################################################################
     # Student code end
@@ -52,6 +79,8 @@ def average_depth_change():
     ############################################################################
     # Student code begin
     ############################################################################
+    coupling_maps = create_coupling_maps()
+    # The mean of the depth differences (mean(sabre-basic))
 
     raise NotImplementedError(
             "`average_depth_change` function in "

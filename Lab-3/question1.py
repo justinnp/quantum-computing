@@ -22,10 +22,9 @@ def q1a():
     # Student code begin
     ############################################################################
     q1a_basis_gates = ['cx', 'u']
-    for benchmark_circuit in workload_list.keys():
-        circuit = workload_list[benchmark_circuit]
-        transpiled = transpile(circuit, basis_gates=q1a_basis_gates)
-        output_dict[benchmark_circuit] = transpiled
+    for circuit_key, benchmark_circuit in workload_list.items():
+        transpiled = transpile(benchmark_circuit, basis_gates=q1a_basis_gates)
+        output_dict[circuit_key] = transpiled
     ############################################################################
     # Student code end
     ############################################################################
@@ -51,11 +50,10 @@ def q1b():
     ############################################################################
     # Student code begin
     ############################################################################
-    q1b_basis_gates = ['cx','rx','ry','rz']
-    for benchmark_circuit in workload_list.keys():
-        circuit = workload_list[benchmark_circuit]
-        transpiled = transpile(circuit, basis_gates=q1b_basis_gates)
-        output_dict[benchmark_circuit] = transpiled
+    q1b_basis_gates = ['cx', 'rx', 'ry', 'rz']
+    for circuit_key, benchmark_circuit in workload_list.items():
+        transpiled = transpile(benchmark_circuit, basis_gates=q1b_basis_gates)
+        output_dict[circuit_key] = transpiled
     ############################################################################
     # Student code end
     ############################################################################
