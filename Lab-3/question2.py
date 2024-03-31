@@ -1,6 +1,7 @@
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile, transpiler
 from utils import get_benchmark_dict
 import numpy as np
+import statistics
 
 workload_list = get_benchmark_dict("SWAP_Benchmarks")
 
@@ -80,12 +81,16 @@ def average_depth_change():
     # Student code begin
     ############################################################################
     coupling_maps = create_coupling_maps()
-    # The mean of the depth differences (mean(sabre-basic))
-
-    raise NotImplementedError(
-            "`average_depth_change` function in "
-            + "`question2.py` needs to be implemented"
-        )
+    for circuit_key, benchmark_circuit in workload_list.items():
+        benchmark_circuit_depth = benchmark_circuit.depth()
+        depth_diffs = []
+        for _, c_map in coupling_maps.items():
+            transpiled_benchmark_circuit = transpile(benchmark_circuit, coupling_map=c_map, routing_method='sabre', optimization_level=1)
+            transpiled_depth = transpiled_benchmark_circuit.depth()
+            diff = abs(benchmark_circuit_depth - transpiled_depth)
+            depth_diffs.append(diff)
+        mean_diff = statistics.mean(depth_diffs)
+        output_dict[circuit_key] = mean_diff
     
     ############################################################################
     # Student code end
