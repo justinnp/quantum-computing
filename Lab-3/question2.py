@@ -117,12 +117,18 @@ def average_nswap_change():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`average_nswap_change` function in "
-            + "`question2.py` needs to be implemented"
-        )
-    
+    coupling_maps = create_coupling_maps()
+    for circuit_key, benchmark_circuit in workload_list.items():
+        swap_inserts = []
+        # get swap gates before transpiling circuit, if any (default to 0)
+        swap_count_before = benchmark_circuit.count_ops().get('swap', 0)
+        for _, c_map in coupling_maps.items():
+            transpiled_benchmark_circuit = transpile(benchmark_circuit, coupling_map=c_map, routing_method='sabre', optimization_level=1)
+            swap_count_after = transpiled_benchmark_circuit.count_ops().get('swap', 0)
+            diff = abs(swap_count_before - swap_count_after)
+            swap_inserts.append(diff)
+        average_swaps = statistics.mean(swap_inserts)
+        output_dict[circuit_key] = average_swaps
     ############################################################################
     # Student code end
     ############################################################################
