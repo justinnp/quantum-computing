@@ -21,10 +21,7 @@ def cx_ideal():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`cx_ideal` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    studentGate = CUGate(np.pi, 0, np.pi, 0)
     
     ############################################################################
     # Student code end
@@ -47,11 +44,10 @@ def cx_p95():
     ############################################################################
     # Student code begin
     ############################################################################
+    p = 0.95
+    theta = 2 * math.asin(math.sqrt(p))
 
-    raise NotImplementedError(
-            "`cx_p95` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    studentGate = CUGate(theta, 0,0, 0)
     
     ############################################################################
     # Student code end
@@ -75,10 +71,10 @@ def cx_p70():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`cx_p70` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    p = 0.70
+    theta = 2 * math.asin(math.sqrt(p))
+
+    studentGate = CUGate(theta, 0,0, 0)
     
     ############################################################################
     # Student code end
