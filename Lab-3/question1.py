@@ -1,6 +1,6 @@
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile, transpiler
 from utils import get_benchmark_dict
-
+import os
 workload_list = get_benchmark_dict("SWAP_Benchmarks")
 
 def q1a():
@@ -21,12 +21,11 @@ def q1a():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`q1a` function in "
-            + "`question1.py` needs to be implemented"
-        )
-    
+    q1a_basis_gates = ['cx', 'u']
+    for benchmark_circuit in workload_list.keys():
+        circuit = workload_list[benchmark_circuit]
+        transpiled = transpile(circuit, basis_gates=q1a_basis_gates)
+        output_dict[benchmark_circuit] = transpiled
     ############################################################################
     # Student code end
     ############################################################################
@@ -52,12 +51,11 @@ def q1b():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`q1b` function in "
-            + "`question1.py` needs to be implemented"
-        )
-    
+    q1b_basis_gates = ['cx','rx','ry','rz']
+    for benchmark_circuit in workload_list.keys():
+        circuit = workload_list[benchmark_circuit]
+        transpiled = transpile(circuit, basis_gates=q1b_basis_gates)
+        output_dict[benchmark_circuit] = transpiled
     ############################################################################
     # Student code end
     ############################################################################
