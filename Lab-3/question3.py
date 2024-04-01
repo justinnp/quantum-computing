@@ -102,10 +102,10 @@ def q3c_edge_gates():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`q3c_edge_gates` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    edge_gates["01"] = CUGate(2 * math.asin(math.sqrt(0.99)), 0, 0, 0)
+    edge_gates["12"] = CUGate(2 * math.asin(math.sqrt(0.90)), 0, 0, 0)
+    edge_gates["23"] = CUGate(2 * math.asin(math.sqrt(0.80)), 0, 0, 0)
+    edge_gates["03"] = CUGate(2 * math.asin(math.sqrt(0.75)), 0, 0, 0)
 
     ############################################################################
     # Student code end
@@ -128,10 +128,12 @@ def q3c_device_qubit_route_mapping():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`q3c_device_qubit_route_mapping` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    qubit_mapping = {
+        0: 1,
+        1: 0,
+        2: 2,
+        3: 3
+    }
 
     ############################################################################
     # Student code end
@@ -153,11 +155,17 @@ def q3c_device_compatible_physical_circuit():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`q3c_device_compatible_physical_circuit` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    edge_gates = q3c_edge_gates()
+    qubit_mapping = q3c_device_qubit_route_mapping()
+    qc = QuantumCircuit(4)
+    qc.append(edge_gates["01"], [qubit_mapping[0], qubit_mapping[1]])
+    qc.append(edge_gates["12"], [qubit_mapping[0], qubit_mapping[2]])
+    # SWAP using noisy CNOTs
+    qc.append(edge_gates["23"], [qubit_mapping[2], qubit_mapping[3]])
+    qc.append(edge_gates["23"], [qubit_mapping[3], qubit_mapping[2]])
+    qc.append(edge_gates["23"], [qubit_mapping[2], qubit_mapping[3]])
+    # CNOT with newly swapped q3
+    qc.append(edge_gates["12"], [qubit_mapping[0], qubit_mapping[2]])
     
     ############################################################################
     # Student code end
@@ -179,11 +187,12 @@ def q3c_device_qubit_read_mapping():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`q3c_device_qubit_read_mapping` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    qubit_mapping = {
+        0: 1,
+        1: 0,
+        2: 3,
+        3: 2
+    }
     
     ############################################################################
     # Student code end
@@ -211,10 +220,10 @@ def q3d_edge_gates():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`q3d_edge_gates` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    edge_gates["01"] = CUGate(2 * math.asin(math.sqrt(0.850)), 0, 0, 0)
+    edge_gates["12"] = CUGate(2 * math.asin(math.sqrt(0.825)), 0, 0, 0)
+    edge_gates["13"] = CUGate(2 * math.asin(math.sqrt(0.975)), 0, 0, 0)
+    edge_gates["34"] = CUGate(2 * math.asin(math.sqrt(0.990)), 0, 0, 0)
 
     ############################################################################
     # Student code end
@@ -237,10 +246,13 @@ def q3d_device_qubit_route_mapping():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`q3d_device_qubit_route_mapping` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    qubit_mapping = {
+        0: 3,
+        1: 4,
+        2: 1,
+        3: 0,
+        4: None
+    }
 
     ############################################################################
     # Student code end
@@ -263,10 +275,19 @@ def q3d_device_compatible_physical_circuit():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`q3d_device_compatible_physical_circuit` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    edge_gates = q3d_edge_gates()
+    qubit_mapping = q3d_device_qubit_route_mapping()
+    qc = QuantumCircuit(5)
+    # CNOT 0 -> 1
+    qc.append(edge_gates["34"], [qubit_mapping[0], qubit_mapping[1]])
+    # CNOT 0 -> 2
+    qc.append(edge_gates["13"], [qubit_mapping[0], qubit_mapping[2]])
+    # SWAP 2 <-> 3
+    qc.append(edge_gates["01"], [qubit_mapping[2], qubit_mapping[3]])
+    qc.append(edge_gates["01"], [qubit_mapping[3], qubit_mapping[2]])
+    qc.append(edge_gates["01"], [qubit_mapping[2], qubit_mapping[3]])
+    # CNOT 0 -> swapped(3)
+    qc.append(edge_gates["13"], [qubit_mapping[0], qubit_mapping[2]])
     
     ############################################################################
     # Student code end
@@ -288,11 +309,13 @@ def q3d_device_qubit_read_mapping():
     ############################################################################
     # Student code begin
     ############################################################################
-
-    raise NotImplementedError(
-            "`q3d_device_qubit_read_mapping` function in "
-            + "`question3.py` needs to be implemented"
-        )
+    qubit_mapping = {
+        0: 3,
+        1: 4,
+        2: 0,
+        3: 1,
+        4: None
+    }
     
     ############################################################################
     # Student code end
