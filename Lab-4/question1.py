@@ -38,20 +38,20 @@ def decoder1():
     ############################################################################
     # Student code begin
     ############################################################################
-
     qc = QuantumCircuit(5,2)
     # Error Detection
-    qc.cx(0, 3)
-    qc.cx(1, 3)
-    qc.cx(1, 4)
-    qc.cx(2, 4)
+    qc.cx(0, 3) # Z1
+    qc.cx(1, 3) # Z1, Z2
+    qc.cx(1, 4) # Z2
+    qc.cx(2, 4) # Z2, Z3
     # Classical measurement on ancilla
     qc.measure(3, 0)
     qc.measure(4, 1)
-    # Correction (flip if ancilla classical 0 is 1 and 1 is 0)
-    qc.x(1).c_if(qc.cregs[0], 1)
-    qc.x(2).c_if(qc.cregs[0], 2)
+    # Correction
+    qc.x(2).c_if(qc.cregs[0], 1)
+    qc.x(1).c_if(qc.cregs[0], 2)
     qc.x(0).c_if(qc.cregs[0], 3)
+   
     # Decode
     qc.cx(0, 2)
     qc.cx(0, 1)
