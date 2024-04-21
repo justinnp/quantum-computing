@@ -46,12 +46,15 @@ def decoder1():
     qc.cx(1, 4)
     qc.cx(2, 4)
     # Classical measurement on ancilla
-    qc.measure(3, 0)
-    qc.measure(4, 1)
+    qc.measure(3, 1)
+    qc.measure(4, 0)
     # Correction (flip if ancilla classical 0 is 1 and 1 is 0)
-    qc.x(1).c_if(qc.cregs[0], 1)
-    qc.x(2).c_if(qc.cregs[0], 2)
-    qc.x(0).c_if(qc.cregs[0], 3)
+    # if b'01' then apply X to third qubit
+    qc.x(2).c_if(qc.cregs[0], 1)
+    # if b'10' then apply X to qubit 0
+    qc.x(0).c_if(qc.cregs[0], 2)
+    # if b'11' then apply X to second qubit
+    qc.x(1).c_if(qc.cregs[0], 3)
     # Decode
     qc.cx(0, 2)
     qc.cx(0, 1)
