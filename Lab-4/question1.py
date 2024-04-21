@@ -1,5 +1,5 @@
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile
-from qiskit.providers.aer import QasmSimulator
+from qiskit_aer.backends.qasm_simulator import QasmSimulator
 
 
 def encoder():
@@ -16,10 +16,8 @@ def encoder():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`encoder` function in "
-            + "`question1.py` needs to be implemented"
-        )
+    qc.cx(0, 1)
+    qc.cx(0, 2)
     
     ############################################################################
     # Student code end
@@ -41,11 +39,22 @@ def decoder1():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`decoder1` function in "
-            + "`question1.py` needs to be implemented"
-        )
-    
+    qc = QuantumCircuit(5,2)
+    # Error Detection
+    qc.cx(0, 3)
+    qc.cx(1, 3)
+    qc.cx(1, 4)
+    qc.cx(2, 4)
+    # Classical measurement on ancilla
+    qc.measure(3, 0)
+    qc.measure(4, 1)
+    # Correction (flip if ancilla classical 0 is 1 and 1 is 0)
+    qc.x(1).c_if(qc.cregs[0], 1)
+    qc.x(2).c_if(qc.cregs[0], 2)
+    qc.x(0).c_if(qc.cregs[0], 3)
+    # Decode
+    qc.cx(0, 2)
+    qc.cx(0, 1)
     ############################################################################
     # Student code end
     ############################################################################
@@ -65,10 +74,7 @@ def decoder2():
     # Student code begin
     ############################################################################
 
-    raise NotImplementedError(
-            "`decoder2` function in "
-            + "`question1.py` needs to be implemented"
-        )
+    return qc
     
     ############################################################################
     # Student code end
