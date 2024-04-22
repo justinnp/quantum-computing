@@ -29,12 +29,22 @@ class QAOASolver(object):
         ############################################################################
         # Student code begin
         ############################################################################
+        # starter code:
+        # QuantumCircuit with V quantum registered bits and V classically registered bits
+        # Superposition state over all qubits
 
-        raise NotImplementedError(
-                "`create_qaoa_circuit` function in "
-                + "`question3.py` needs to be implemented"
-            )
-        
+        # each Uc (problem hamiltonian, parameterized by gamma) and Ub (mixing/driver unitary, parameterized by beta) is in a single layer (p = 1)
+        for layer in range(p):
+            # nodes on connected edge
+            for n, n_next in self.E:
+                # apply hamiltonian unitary (CNOT + RZ(gamma) + CNOT) to each qubit corresponding to each edge connected node 
+                self.qaoa_circuit.cx(n, n_next)
+                self.qaoa_circuit.rz(2 * self.gamma, n_next)
+                self.qaoa_circuit.cx(n, n_next)
+            # apply mixing unitary (Ub) on all qubits (nodes)
+            for q in range(len(self.V)):
+                self.qaoa_circuit.rx(2 * self.beta, q)
+
         ############################################################################
         # Student code end
         ############################################################################
@@ -65,11 +75,16 @@ class QAOASolver(object):
         # Student code begin
         ############################################################################
 
-        raise NotImplementedError(
-                "`_compute_cut` function in "
-                + "`question3.py` needs to be implemented"
-            )
-        
+        # cut string represents the set of nodes present on either side of the cut
+
+        for n, n_next in self.E:
+            # in lecture, a graph of edges [[0,1], [1,2]] was cut resulting in '010' and '101'
+            # this translates to qubits 0 and 2 being in partition '0' and qubit 1 being in partition '1' for 010, cut value of 2 and 1 respectively, max = 2
+            # compare parition integers and add to overall cut value
+            if  s[n] != s[n_next]:
+                # cut value represents the number of edges between two sides of the cut
+                cut_value += 1
+    
         ############################################################################
         # Student code end
         ############################################################################
